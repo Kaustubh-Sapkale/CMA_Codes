@@ -1,0 +1,43 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import math
+from poly import Polynomial
+
+def f(x):
+    return -2*x 
+
+def exact_fun(x):
+    return 5 * math.exp(-2 * x)
+
+def backward_euler(f, x0, h, tmax):
+    t = np.arange(0, tmax+h, h)
+    x = np.zeros(len(t))
+    x[0] = x0
+    
+    for i in range(len(t)-1):
+        x[i+1] = x[i] / (1 + 2*h)
+    return t, x
+
+
+
+if __name__ == "__main__":
+    x0 = 5
+    tmax = 10
+    step_size = [0.1, 0.5, 1, 2, 3]
+
+    for h in step_size:
+        t, x = backward_euler(f, x0, h, tmax)
+        plt.plot(t, x, label=f'h={h}')
+
+    x_input = list(np.linspace(0, 10, 100))
+    y_point = [exact_fun(i) for i in x_input]
+        
+
+    plt.plot(x_input,y_point , label='exact solution')
+    plt.title("forward Euler method to solve the ODE x'(t) = −2x(t)")
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.xlim(-1 , 10)
+    plt.ylim(-0.5 , 5)
+    plt.legend()
+    plt.show()
